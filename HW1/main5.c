@@ -13,7 +13,7 @@ int main() {
     if (i > size) {
         printf("Warning! You have designated a number i=%d\n", i);
         printf("which is greater than the size of array (%d)\n.", size);
-        printf("This program now uses i=%d instead as the argument.\n", size);
+        printf("Now i=%d is used instead as the argument.\n", size);
         i = size;
     }
     char big[i]; // initialization is not necessary in this alogrithm
@@ -60,7 +60,7 @@ int main() {
     if (i > size) {
         printf("Warning! You have designated a number i=%d\n", i);
         printf("which is greater than the size of array (%d)\n.", size);
-        printf("This program now uses i=%d instead as the argument.\n", size);
+        printf("Now uses i=%d is used instead as the argument.\n", size);
         i = size;
     }
     char big[i]; // initialization is not necessary in this alogrithm
