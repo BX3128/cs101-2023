@@ -109,3 +109,29 @@ int main() {
     printf("The %d-%s largest element is %d.\n", i, seq[ith], big[i-1]);
 }
 #endif
+
+#ifdef COPILOT
+// find the i-th largest element in an array a[] of integers
+// a[] must not be modified
+// i=4, a[] = {-9, 8, 7, 6, 5, -4, 3, -2, 1}
+// only stdio.h is allowed
+// { should be on the same line as the function name or the control structure
+#include <stdio.h>
+int main() {
+    int a[] = {-9, 8, 7, 6, 5, -4, 3, -2, 1};
+    int i = 4;
+    int n = sizeof(a)/sizeof(a[0]);
+    int j, k, t;
+    for (j = 0; j < n-1; j++) {
+        for (k = j+1; k < n; k++) {
+            if (a[j] < a[k]) {
+                t = a[j];
+                a[j] = a[k];
+                a[k] = t;
+            }
+        }
+    }
+    printf("The %d-th largest element is %d.\n", i, a[i-1]);
+    return 0;
+}
+#endif
