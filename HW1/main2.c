@@ -1,7 +1,8 @@
 #include <stdio.h>
 
 int main() {
-    char a[]="A3BB2CCC2";
+    char a[] = "A3B2C4A9";
+    //char a[]="A3BB2CCC2";
 
     int index1=0, index2=0;
     for (int i=0; i<sizeof(a)/sizeof(a[0])-1; i++) {
@@ -20,7 +21,11 @@ int main() {
 }
 
 // HW#1 main2.c
-// Purpose:
+// Purpose (update):
+//   Run-length decoding a[]="A3B2C4A9"
+//   Output: AAABBCCCCAAAAAAAAA
+//
+// Purpose (previous):
 //   Run-length decoding a[]="A3BB2CCC2"
 //   Output: AAABBBBCCCCCC
 //
