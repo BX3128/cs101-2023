@@ -1,5 +1,32 @@
 #include <stdio.h>
+#define ENCODE  // This code does what the HW main1.c asked to do.
+//#define COUNT   // Counts how many times a character appears.
 
+#ifdef ENCODE   // This code does what the HW main1.c asked to do.
+#include <stdio.h>
+
+int main() {
+    char a[] = "AABBBCCCCddd";
+
+    int len = sizeof(a) / sizeof(a[0]) - 1;
+    int count = 0;
+    for (int i = 0; i < len; i++) {
+        if (count == 0) {
+            printf("%c", a[i]);
+        }
+        count++;
+        if (a[i] != a[i+1]) {
+            printf("%d", count);
+            count = 0;
+        }
+    }
+    printf("\n");
+    return 0;
+}
+#endif
+
+#ifdef COUNT    // Counts how many times a character appears.
+#include <stdio.h>
 int main() {
     char a[]="AABBBCCCCddd";
     int f[256]={0};
@@ -14,6 +41,8 @@ int main() {
     printf("\n");
     return 0;
 }
+#endif
+
 // HW#1 main1.c
 // Purpose:
 //     Run-length encoding "AABBBCCCCddd".
