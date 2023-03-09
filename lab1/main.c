@@ -28,6 +28,8 @@ int main() {
     for (int i=0; i<sizeof(a_read)/sizeof(a_read[0]); i++) {
         printf("%d ", a_read[i]);
     }
+
+    fclose(fp);
     printf("\n");
     return 0;
 }
