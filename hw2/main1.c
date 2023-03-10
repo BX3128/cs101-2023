@@ -15,17 +15,17 @@
                      // only 1 special lot number allowed
 #define MAX_GEN 5    // max lot number tuples to be generated
 
-// macro
+// global variables
+int lot[MAXLOT];     // lottery tickets
 
-int lot[MAXLOT];     // global variable, lottery tickets
-
+// function prototypes
 void init_lot(void); // initialize lot[]
 void shuf_lot(void); // shuffle the lot[]
 void sort_lot(void); // sort the first NORMAL lot numbers
 void swap_lot(int i, int j); // swap the i and j elements of lot[]
-
 int sp_lot(void);    // find the special number
 
+// main()
 int main(int argc, char* argv[]) {
     srand((unsigned) time(NULL)); // random seed
 
@@ -47,6 +47,8 @@ int main(int argc, char* argv[]) {
     fprintf(fp, "========= lotto649 =========\r\n");
 
     time(&curtime);
+    // ctime() attaches a newline (0x0A) charaacter, i.e., "%s\n"
+    // We got to remove it manually.
     strcpy(time_str, ctime(&curtime));
     for (int i=0; i<sizeof(time_str)/sizeof(time_str[0]); i++) {
         if (time_str[i] == '\0') {
@@ -56,11 +58,11 @@ int main(int argc, char* argv[]) {
     }
     fprintf(fp, "= %s =\r\n", time_str);
 
-    init_lot();
+    init_lot();  // initialize the lot[] array
 
     for (int i=0; i<MAX_GEN; i++) {
-        shuf_lot();
-        sort_lot();
+        shuf_lot(); // shuffle lot[] array
+        sort_lot(); // sort the first MAXLOT elements in lot[]
         fprintf(fp, "[%d]: ",i+1);
         for (int j=0; j<NORMAL; j++) {
             if (i<n) {
