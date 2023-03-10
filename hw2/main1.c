@@ -79,7 +79,9 @@ int main(int argc, char* argv[]) {
     }
 
     fprintf(fp, "========= cise@CGU =========\n");
-
+    #ifndef ONSCREEN
+    fclose(fp);
+    #endif
     return 0;
 }
 
