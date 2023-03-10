@@ -1,30 +1,37 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
-#define ONSCREEN     // display the result on the screen
-//#define EXPORT       // export the result to the file
 
+// build parameters
+//#define ONSCREEN   // Remark this line to export the messages to file.
+                     // Otherwise, they will be on the screen. 
+
+// program parameters
 #define MAXLOT 69    // max lottery number
 #define SPLOT 10     // max special lottery number
-                     // min lottery number must be 1
+                     // lottery number must begin with 1
 #define NORMAL 6     // how many normal lot number
                      // only 1 special lot number allowed
 #define MAX_GEN 5    // max lot number tuples to be generated
 
-int lot[MAXLOT];     // global, lottery tickets
+// macro
+
+int lot[MAXLOT];     // global variable, lottery tickets
 
 void init_lot(void); // initialize lot[]
 void shuf_lot(void); // shuffle the lot[]
 void sort_lot(void); // sort the first NORMAL lot numbers
+void swap_lot(int i, int j); // swap the i and j elements of lot[]
+
 int sp_lot(void);    // find the special number
 
-
-int main() {
-    srand((unsigned) time(NULL));
+int main(int argc, char* argv[]) {
+    srand((unsigned) time(NULL)); // random seed
 
     time_t curtime;
-    int n;
-    FILE* fp;
+    char time_str[80];  // string buffer to store current time
+    int n;              // how many tuples of lot to buy?
 
     printf("歡迎光臨長庚樂透彩購買機台\n");
     printf("請問您要買幾組樂透彩：");
@@ -32,50 +39,44 @@ int main() {
     printf("已為您購買的 %d 組樂透組合輸出至 lotto.txt\n", n);
 
     #ifdef ONSCREEN
-    printf("======== lotto649 =========\n");
+        #define fp stdout
+    #else
+        FILE* fp;
+        fp = fopen("lotto.txt", "w+");
     #endif
-    #ifdef EXPORT
-    fp = fopen("lotto.txt", "w+");
-    fprintf(fp, "======== lotto649 =========\r\n");
-    #endif
+    fprintf(fp, "========= lotto649 =========\r\n");
 
     time(&curtime);
-    #ifdef ONSCREEN
-    printf("= %s =\n", ctime(&curtime));
-    #endif
-    #ifdef EXPORT
-    fprintf(fp, "= %s =\r\n", ctime(&curtime));
-    #endif
+    strcpy(time_str, ctime(&curtime));
+    for (int i=0; i<sizeof(time_str)/sizeof(time_str[0]); i++) {
+        if (time_str[i] == '\0') {
+            time_str[i-1] = '\0';
+            break;
+        }
+    }
+    fprintf(fp, "= %s =\r\n", time_str);
 
     init_lot();
 
     for (int i=0; i<MAX_GEN; i++) {
         shuf_lot();
         sort_lot();
-        #ifdef ONSCREEN
-        printf("[%d]: ",i+1);
-        #endif
+        fprintf(fp, "[%d]: ",i+1);
         for (int j=0; j<NORMAL; j++) {
             if (i<n) {
-                #ifdef ONSCREEN
-                printf("%02d ", lot[j]);
-                #endif
+                fprintf(fp, "%02d ", lot[j]);
             } else {
-                printf("-- ");
+                fprintf(fp, "-- ");
             }
         }
         if (i<n) {
-            #ifdef ONSCREEN
-            printf("%02d\n", sp_lot());
-            #endif
+            fprintf(fp, "%02d\n", sp_lot());
         } else {
-            printf("--\n");
+            fprintf(fp, "--\n");
         }
     }
 
-    #ifdef ONSCREEN
-    printf("======== cise@CGU =========\n");
-    #endif
+    fprintf(fp, "========= cise@CGU =========\n");
 
     return 0;
 }
@@ -90,9 +91,7 @@ void shuf_lot(void) {
     int tmp, k;
     for (int i=MAXLOT-1; i>0; i--) {
         k = rand() % (i+1);
-        tmp = lot[i];
-        lot[i] = lot[k];
-        lot[k] = tmp;
+        swap_lot(i, k);
     }
 }
 
@@ -110,12 +109,16 @@ void sort_lot(void) {
     for (int i=0; i<NORMAL; i++) {
         for (int j=0; j<NORMAL; j++) {
             if (lot[i] < lot[j]) {
-                tmp = lot[i];
-                lot[i] = lot[j];
-                lot[j] = tmp;
+                swap_lot(i, j);
             }
         }
     }
+}
+
+void swap_lot(int i, int j) {
+   int tmp = lot[i];
+   lot[i] = lot[j];
+   lot[j] = tmp;
 }
 
 // Random But No Repeat
