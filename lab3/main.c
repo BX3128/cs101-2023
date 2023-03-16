@@ -6,8 +6,8 @@ typedef struct person {
 } person_t;
 
 int main() {
-    FILE* wfp;
-    wfp = fopen("person.bin", "w+");
+    FILE* fp;
+    fp = fopen("person.bin", "w+");
     person_t p[5] = { {1, "IU", "Lee"},
                       {2, "IUU", "Lee"},
                       {3, "IUUU", "Lee"},
@@ -15,23 +15,20 @@ int main() {
                       {5, "IUUUUU", "Lee"},
     };
     for (int i=0; i<5; i++) {
-        fwrite(p+i, sizeof(person_t), 1, wfp);
-        // fwrite(p[i], sizeof(person_t), 1, wfp);
+        fwrite(p+i, sizeof(person_t), 1, fp);
+        // fwrite(p[i], sizeof(person_t), 1, fp);
     }
-    fclose(wfp);
-
-    FILE* rfp;
-    rfp = fopen("person.bin", "r");
+    fseek(fp, 0, SEEK_SET);
     person_t tmp;
     int i=0;
-    while (fread(&tmp, sizeof(person_t), 1, rfp)) {
+    while (fread(&tmp, sizeof(person_t), 1, fp)) {
         printf("[%d] %d: %s %s\n", i,
                 tmp.id,
                 tmp.first_name,
                 tmp.last_name);
         i++;
     }
-    fclose(rfp);
+    fclose(fp);
                                                   
     return 0;
 }
