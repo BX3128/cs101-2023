@@ -1,8 +1,8 @@
 #include <stdio.h>
 void replace_all(char* str, char oldChar, char newChar) {
     while (*str != '\0') {
-       *str == oldChar ? *str = newChar : 0;
-       str++;
+        *str == oldChar ? *str = newChar : 0;
+        str++;
     }
 }
 
@@ -49,3 +49,5 @@ void replace_all(char* str, char oldChar, char newChar) {
         str++;
     }
 }
+
+*/
