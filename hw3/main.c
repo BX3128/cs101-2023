@@ -81,7 +81,7 @@ int main(int argc, char* argv[]) {
                     printf("售出時間：%s\n", lottos[i].receipt_time);
                     printf("號碼：");
                     for (int k=0; k<7; k++) {
-                        printf("%d ", lottos[i].lotto_set[j][k]);
+                        printf("%02d ", lottos[i].lotto_set[j][k]);
                     }
                     printf("\n");
                 }
