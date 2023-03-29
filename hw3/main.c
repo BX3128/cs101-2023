@@ -77,7 +77,7 @@ int main(int argc, char* argv[]) {
             for (int j=0; j<5; j++) {
                 int chk;
                 if (chk=inlist(lottos[i].lotto_set[j], a, b, c)) {
-                    printf("彩券 No. %d\n", j+1);
+                    printf("彩券 No. %d\n", i+1);
                     printf("售出時間：%s\n", lottos[i].receipt_time);
                     printf("號碼：");
                     for (int k=0; k<7; k++) {
