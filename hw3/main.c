@@ -55,19 +55,22 @@ int main(int argc, char* argv[]) {
             }
         }
         fclose(fp);
+        ticket_no = lottos[last_rec].receipt_id;
         fp = fopen("record.bin", "ab");
     } else {
         fp = fopen("record.bin", "wb");
     }
     ticket_no++;
     sprintf(TXT, "lotto[%05d].txt", ticket_no);
-fclose(fp);
+    
     printf("請問您要買幾組樂透彩：");
     scanf("%d", &n);
+    lottos[last_rec+1].receipt_id = ticket_no;
+    lottos[last_rec+1].receipt_price = n * 100;
     printf("已為您購買的 %d 組樂透組合輸出至 lotto[%05d].txt\n", n, ticket_no);
 
     ftxt = fopen(TXT, "w");
-    fprintf(fp, "========= lotto649 =========\n");
+    fprintf(ftxt, "========= lotto649 =========\n");
 
     time(&curtime);
     // ctime() attaches a newline (0x0A) charaacter, i.e., "%s\n"
@@ -80,27 +83,34 @@ fclose(fp);
         }
     }
     fprintf(ftxt, "========+ No.%05d +========\n", ticket_no);
-    fprintf(fp, "= %s =\r\n", time_str);
+    fprintf(ftxt, "= %s =\r\n", time_str);
+    strcpy(lottos[last_rec+1].receipt_time, time_str);
 
     init_lot();  // initialize the lot[] array
 
     for (int i=0; i<MAX_GEN; i++) {
         shuf_lot(); // shuffle lot[] array
         sort_lot(); // sort the first MAXLOT elements in lot[]
-        fprintf(fp, "[%1d]: ",i+1);
+        fprintf(ftxt, "[%1d]: ",i+1);
         for (int j=0; j<NORMAL; j++) {
             if (i<n) {
-                fprintf(fp, "%02d ", lot[j]);
+                fprintf(ftxt, "%02d ", lot[j]);
+                lottos[last_rec+1].lotto_set[i][j] = lot[j];
             } else {
-                fprintf(fp, "-- ");
+                fprintf(ftxt, "-- ");
+                lottos[last_rec+1].lotto_set[i][j] = 0;
             }
         }
         if (i<n) {
-            fprintf(fp, "%02d\n", sp_lot());
+            int splot = sp_lot();
+            fprintf(ftxt, "%02d\n", splot);
+            lottos[last_rec+1].lotto_set[i][NORMAL] = splot;
         } else {
-            fprintf(fp, "--\n");
+            fprintf(ftxt, "--\n");
         }
     }
+    fwrite(&lottos[last_rec+1], sizeof(lottos[0]), 1, fp);
+    fclose(fp);
 
     fprintf(ftxt, "========= cise@CGU =========\n");
     fclose(ftxt);
