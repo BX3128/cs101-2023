@@ -21,6 +21,7 @@ void shuf_lot(void); // shuffle the lot[]
 void sort_lot(void); // sort the first NORMAL lot numbers
 void swap_lot(int i, int j); // swap the i and j elements of lot[]
 int sp_lot(void);    // find the special number
+int inlist(int list[], int a, int b, int c);
 
 // struct
 typedef struct {
@@ -42,6 +43,7 @@ int main(int argc, char* argv[]) {
     int last_rec = -1;
     int ticket_no = 0;
     char TXT[80];
+    int a, b, c;
     lotto_record_t lottos[LOTTO_M];
     
     printf("歡迎光臨長庚樂透彩購買機台\n");
@@ -65,6 +67,28 @@ int main(int argc, char* argv[]) {
     
     printf("請問您要買幾組樂透彩：");
     scanf("%d", &n);
+    if (n == 0) {
+        fclose(fp);
+        printf("請輸入中獎號碼 (最多三個)：");
+        scanf("%d %d %d", &a, &b, &c);
+        printf("輸入中獎號碼為：%02d %02d %02d\n", a, b, c);
+        printf("以下為中獎彩券：\n");
+        for (int i=0; i<=last_rec; i++) {
+            for (int j=0; j<5; j++) {
+                int chk;
+                if (chk=inlist(lottos[i].lotto_set[j], a, b, c)) {
+                    printf("彩券 No. %d\n", j+1);
+                    printf("售出時間：%s\n", lottos[i].receipt_time);
+                    printf("號碼：");
+                    for (int k=0; k<7; k++) {
+                        printf("%d ", lottos[i].lotto_set[j][k]);
+                    }
+                    printf("\n");
+                }
+            }
+        }
+        return 0;
+    }
     lottos[last_rec+1].receipt_id = ticket_no;
     lottos[last_rec+1].receipt_price = n * 100;
     printf("已為您購買的 %d 組樂透組合輸出至 lotto[%05d].txt\n", n, ticket_no);
@@ -155,6 +179,18 @@ void swap_lot(int i, int j) {
    int tmp = lot[i];
    lot[i] = lot[j];
    lot[j] = tmp;
+}
+
+int inlist(int list[], int a, int b, int c) {
+    for (int i=0; i<7; i++) {
+        if (list[i] == a)
+            return 1;
+        if (list[i] == b)
+            return 1;
+        if (list[i] == c)
+            return 1;
+    }
+    return 0;
 }
 
 // Random But No Repeat
