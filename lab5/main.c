@@ -1,6 +1,9 @@
 #include <stdio.h>
 
-int calc(int (*fun_ptr)(int, int), int x, int y) {
+typedef int (*CALC)(int, int);
+
+//int calc(int (*fun_ptr)(int, int), int x, int y) { // without typedef
+int calc(CALC fun_ptr, int x, int y) {               // using typedef
     return fun_ptr(x, y);
 }
 
