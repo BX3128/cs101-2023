@@ -9,7 +9,7 @@ int multiplication(int i, int j) {
         i++;
         printf("\n");
     }
-    return multi(i, j+1);
+    return multiplication(i, j+1);
 }
 
 int main() {
