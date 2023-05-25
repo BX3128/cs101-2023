@@ -33,6 +33,8 @@ class ReplaceMyString {
                 out << c;
             }
         }
+        in.close();
+        out.close();
     }
 };
 
